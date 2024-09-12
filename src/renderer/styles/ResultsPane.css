@@ -1,0 +1,32 @@
+.results-pane {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+/* .results-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+} */
+
+.results-table {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}
+
+table {
+  width: 95%;
+  height: 95%;
+}
+
+td, th {
+  white-space: nowrap;
+}
+
+.results-charts {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}

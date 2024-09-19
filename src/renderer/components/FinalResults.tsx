@@ -24,10 +24,6 @@ export default function FinalResults({ resultsData }: FinalResultsProps) {
           ))}
         </tbody>
       </table>
-      <div className="footer-buttons">
-        <button>Back</button>
-        <button disabled>Next</button>
-      </div>
     </div>
   );
 }

@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-interface QuestionProps {
-  setHasReadingResults: (value: boolean) => void;
-}
-
-export default function Question({ setHasReadingResults }: QuestionProps) {
+export default function Question() {
   const [answer, setAnswer] = useState('no');
-  const navigate = useNavigate();
-
-  const handleNext = () => {
-    setHasReadingResults(answer === 'yes');
-    navigate('/results');
-  };
 
   return (
     <div>
@@ -35,10 +24,6 @@ export default function Question({ setHasReadingResults }: QuestionProps) {
         />
         No
       </label>
-      <div className="footer-buttons">
-        <button disabled>Back</button>
-        <button onClick={handleNext}>Next</button>
-      </div>
     </div>
   );
 }

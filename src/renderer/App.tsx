@@ -22,8 +22,6 @@ export default function App() {
             <Route path="/reading-results" element={<ResultsPane />} />
           )}
           <Route path="/final-results" element={<FinalResults />} />
-          {/* <Route index element={<ResultsPane />} />
-          <Route path="reading" element={<ResultsPane />} /> */}
         </Route>
       </Routes>
     </Router>

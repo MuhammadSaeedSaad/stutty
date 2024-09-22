@@ -1,0 +1,115 @@
+Global CSS
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+/* Radio Button Styling */
+.radio-group {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.radio-input {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #34c759; /* Green theme */
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.radio-input:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background-color: #34c759;
+  border-radius: 50%;
+}
+
+.radio-input:hover {
+  border-color: #2faa45; /* Darker green on hover */
+}
+
+/* Button Styling */
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #34c759; /* Green theme */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:disabled {
+  background-color: #b2e4bc;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #2faa45; /* Darker green on hover */
+}
+
+.button:active {
+  background-color: #298a39; /* Even darker green on click */
+}
+
+.results-pane {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+/* .results-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+} */
+
+.results-table {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}
+
+table {
+  width: 95%;
+  height: 95%;
+}
+
+td, th {
+  white-space: nowrap;
+}
+
+.results-charts {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}

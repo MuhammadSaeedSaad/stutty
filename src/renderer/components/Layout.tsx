@@ -1,8 +1,12 @@
+/* eslint-disable react/button-has-type */
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import '../styles/Layout.css'; // Add styles for header, footer, and layout
+import { usePagination } from '../contexts/PaginationContext';
+// import '../styles/Layout.css';
 
 export default function Layout() {
+  const { currentPage, totalPages, goToPage } = usePagination();
+
   return (
     <div className="layout-container">
       <header className="header">
@@ -12,7 +16,17 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="footer">
-        <p>Footer Content</p>
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              className={currentPage === index + 1 ? 'active' : ''}
+              onClick={() => goToPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </footer>
     </div>
   );

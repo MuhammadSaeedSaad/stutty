@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import ResultsCharts from './ResultCharts';
 import ResultsTable from './ResultsTable';
-import { handleFileSelect, TotalResults, Results } from '../utils';
+import { handleFileSelect, MinSheetResults, Results } from '../utils';
 // import '../styles/ResultsPane.css';
 import { useResultsContext } from '../contexts/ResultsContext';
 
-export default function ResultsPane() {
+export default function ReadingResultsPane() {
   const [results, setResults] = useState<Results>({
     tableData: null,
     chartsData: null,
@@ -26,7 +26,7 @@ export default function ResultsPane() {
       setResults(result); // Update state with the results
       setState({ loading: false });
       setTotalResults(() => {
-        totalResults.first = {
+        totalResults.second = {
           dRatio: result.tableData.dRatio,
           dAvgTime: result.tableData.dAvgTime,
         };

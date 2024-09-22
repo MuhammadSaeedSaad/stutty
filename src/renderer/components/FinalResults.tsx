@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useResultsContext } from '../contexts/ResultsContext';
+import { calculateTotalScore, getSeverity } from '../utils';
 
-interface FinalResultsProps {
-  resultsData: { header: string; value: string }[];
-}
+type TableData = { header: string; value: string }[];
+type FinalResultsData = { totalScore: number; severity: string };
 
-export default function FinalResults({ resultsData }: FinalResultsProps) {
+const tableData: TableData = [{ header: '', value: '' }];
+
+export default function FinalResults() {
+  const [finalResultsData, setFinalResultsData] = useState<FinalResultsData>(
+    {},
+  );
+
+  const { totalResults } = useResultsContext();
+
+  useEffect(() => {
+    console.log('inside useEffect of final results');
+    const totalScore = calculateTotalScore(totalResults);
+    const severity = getSeverity(totalScore);
+    setFinalResultsData(() => {
+      return { totalScore, severity };
+    });
+    console.log(finalResultsData);
+  }, []);
+
   return (
     <div>
       <h1>Final Results</h1>
@@ -16,12 +35,20 @@ export default function FinalResults({ resultsData }: FinalResultsProps) {
           </tr>
         </thead>
         <tbody>
-          {resultsData.map((row, index) => (
+          {/* {tableData.map((row, index) => (
             <tr key={index}>
               <td>{row.header}</td>
               <td>{row.value}</td>
             </tr>
-          ))}
+          ))} */}
+          <tr key={1}>
+            <td>Total score</td>
+            <td>{finalResultsData.totalScore}</td>
+          </tr>
+          <tr key={2}>
+            <td>Severity</td>
+            <td>{finalResultsData.severity}</td>
+          </tr>
         </tbody>
       </table>
     </div>

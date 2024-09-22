@@ -1,82 +1,186 @@
-/* Global CSS */
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  background-color: #f9f9f9;
+  background-color: #f4f7f6;
+  color: #333;
 }
 
-/* Radio Button Styling */
-.radio-group {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+h1 {
+  color: #2e7d32;
+  text-align: center;
 }
 
-.radio-label {
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+td, th {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* BarChart Component */
+.results-charts {
+  width: 60%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.radio-input {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid #34c759; /* Green theme */
-  border-radius: 50%;
-  margin-right: 8px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.radio-input:checked::before {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 10px;
-  height: 10px;
-  background-color: #34c759;
-  border-radius: 50%;
-}
-
-.radio-input:hover {
-  border-color: #2faa45; /* Darker green on hover */
-}
-
-/* Button Styling */
-.footer-buttons {
-  display: flex;
-  justify-content: space-between;
   margin-top: 20px;
 }
 
-.button {
-  padding: 10px 20px;
-  background-color: #34c759; /* Green theme */
-  color: #fff;
+.results-charts canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Layout Component */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #388e3c;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.footer {
+  padding: 10px;
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Pagination */
+.pagination button {
+  background-color: #81c784;
+  color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.button:disabled {
-  background-color: #b2e4bc;
-  cursor: not-allowed;
+.pagination button.active {
+  background-color: #388e3c;
 }
 
-.button:hover:not(:disabled) {
-  background-color: #2faa45; /* Darker green on hover */
+.pagination button:hover {
+  background-color: #66bb6a;
 }
 
-.button:active {
-  background-color: #298a39; /* Even darker green on click */
+/* Question Component */
+label {
+  margin-right: 15px;
+  font-size: 18px;
+  color: #388e3c;
+}
+
+input[type="radio"] {
+  margin-right: 8px;
+}
+
+.radio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ResultsTable Component */
+.results-table {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.results-table table {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.results-table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.results-table td {
+  padding: 8px;
+}
+
+.results-table tr:hover {
+  background-color: #e8f5e9;
+}
+
+.results-table td#fileName,
+.results-table td#dNum,
+.results-table td#fNum {
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* ResultsPane Component */
+.results-pane {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.results-table,
+.results-charts {
+  flex: 1;
+  min-width: 45%;
+}
+
+/* FinalResults Component */
+.final-results {
+  background-color: #f1f8e9;
+  border: 1px solid #4caf50;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.final-results table {
+  width: 100%;
+}
+
+.final-results th {
+  background-color: #66bb6a;
+}
+
+.final-results td {
+  color: #2e7d32;
+}
+
+/* Loading State */
+div.loading {
+  font-size: 24px;
+  color: #388e3c;
+  text-align: center;
+  margin-top: 50px;
 }

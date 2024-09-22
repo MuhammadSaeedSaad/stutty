@@ -28,6 +28,105 @@ export interface Results {
   };
 }
 
+export interface MinSheetResults {
+  dRatio: number;
+  dAvgTime: number;
+}
+
+export interface TotalResults {
+  first: MinSheetResults;
+  second: MinSheetResults;
+}
+
+export const readingRangesSet = {
+  descriptingRange: [
+    { min: 0, max: 2, score: 2 },
+    { min: 2, max: 3, score: 3 },
+    { min: 3, max: 5, score: 4 },
+    { min: 5, max: 7, score: 5 },
+    { min: 7, max: 10, score: 6 },
+    { min: 10, max: 15, score: 7 },
+    { min: 15, max: 29, score: 8 },
+    { min: 29, max: 100, score: 9 },
+  ],
+  readingRange: [
+    { min: 0, max: 2, score: 2 },
+    { min: 2, max: 4, score: 4 },
+    { min: 4, max: 6, score: 5 },
+    { min: 6, max: 10, score: 6 },
+    { min: 10, max: 17, score: 7 },
+    { min: 17, max: 27, score: 8 },
+    { min: 27, max: 100, score: 9 },
+  ],
+};
+
+export const generalRanges = [
+  { min: 0, max: 2, score: 2 },
+  { min: 2, max: 3, score: 4 },
+  { min: 3, max: 5, score: 6 },
+  { min: 5, max: 7, score: 10 },
+  { min: 7, max: 10, score: 12 },
+  { min: 10, max: 15, score: 14 },
+  { min: 15, max: 29, score: 16 },
+  { min: 29, max: 100, score: 18 },
+];
+
+const durationRanges = [
+  { min: 0, max: 0.5, score: 1 },
+  { min: 0.5, max: 1, score: 2 },
+  { min: 1, max: 2, score: 3 },
+  { min: 2, max: 10, score: 4 },
+  { min: 10, max: 30, score: 5 },
+  { min: 30, max: 60, score: 6 },
+  { min: 60, max: 100, score: 7 },
+];
+
+const severityRanges = [
+  { min: 0, max: 10, label: 'very simple' },
+  { min: 11, max: 12, label: 'simple' },
+  { min: 13, max: 16, label: 'mild' },
+  { min: 17, max: 18, label: 'severe' },
+  { min: 19, max: 25, label: 'very severe' },
+];
+
+function getScore(value: number, ranges: any[]): number {
+  const range = ranges.find((r) => value >= r.min && value <= r.max);
+  return range ? range.score : 0;
+}
+
+export function getSeverity(totalScore: number): string {
+  const range = severityRanges.find(
+    (r) => totalScore >= r.min && totalScore <= r.max,
+  );
+  return range ? range.label : 'out of range';
+}
+
+export function calculateTotalScore(results: TotalResults): number {
+  let dRatioScore: number;
+  const dAvgTimeScore: number = getScore(
+    results.first.dAvgTime,
+    durationRanges,
+  );
+  let totalScore;
+
+  if (results.second) {
+    dRatioScore = getScore(
+      results.first.dRatio,
+      readingRangesSet.descriptingRange,
+    );
+    dRatioScore += getScore(
+      results.second.dRatio,
+      readingRangesSet.readingRange,
+    );
+    totalScore = dRatioScore + dAvgTimeScore;
+    return totalScore;
+  }
+
+  dRatioScore = getScore(results.first.dRatio, generalRanges);
+  totalScore = dRatioScore + dAvgTimeScore;
+  return totalScore;
+}
+
 export function parseCSV(csvData: string): [number, string][] {
   const lines = csvData.split('\r\n');
   const dataArray: [number, string][] = [];

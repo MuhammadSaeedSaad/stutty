@@ -205,7 +205,7 @@ export default class MenuBuilder {
             click: async () => {
               try {
                 const result = await dialog.showOpenDialog({
-                  properties: ['openFile', 'multiSelections'],
+                  properties: ['openFile'],
                 });
                 if (!result.canceled) {
                   result.filePaths.map((filePath: string) =>

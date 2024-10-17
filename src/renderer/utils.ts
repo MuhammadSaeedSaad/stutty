@@ -5,23 +5,25 @@ export type chartData = {
   datasets: {}[];
 };
 
+export type TableData = {
+  fileName: string | undefined;
+  numOfFs: number;
+  numOfDs: number;
+  fRatio: number;
+  dRatio: number;
+  fAvgTime: number;
+  dAvgTime: number;
+  recordingLength: number;
+  efficientSpeechScore: number;
+  inefficientSpeechScore: number;
+  meanStutteringDuration: number;
+  numberOfSylablesPerMinute: number;
+  numberOfFSylablesPerMinute: number;
+  numberOfDSylablesPerMinute: number;
+};
+
 export interface Results {
-  tableData: {
-    fileName: string;
-    numOfFs: number;
-    numOfDs: number;
-    fRatio: number;
-    dRatio: number;
-    fAvgTime: number;
-    dAvgTime: number;
-    recordingLength: number;
-    efficientSpeechScore: number;
-    inefficientSpeechScore: number;
-    meanStutteringDuration: number;
-    numberOfSylablesPerMinute: number;
-    numberOfFSylablesPerMinute: number;
-    numberOfDSylablesPerMinute: number;
-  };
+  tableData: TableData;
   chartsData: {
     fluentData: chartData;
     dysFluentData: chartData;
@@ -34,8 +36,14 @@ export interface MinSheetResults {
 }
 
 export interface TotalResults {
-  first: MinSheetResults;
-  second: MinSheetResults;
+  first: {
+    all: Results;
+    min: MinSheetResults;
+  };
+  second: {
+    all: Results;
+    min: MinSheetResults;
+  };
 }
 
 export const readingRangesSet = {
@@ -104,25 +112,25 @@ export function getSeverity(totalScore: number): string {
 export function calculateTotalScore(results: TotalResults): number {
   let dRatioScore: number;
   const dAvgTimeScore: number = getScore(
-    results.first.dAvgTime,
+    results.first.min.dAvgTime,
     durationRanges,
   );
   let totalScore;
 
   if (results.second) {
     dRatioScore = getScore(
-      results.first.dRatio,
+      results.first.min.dRatio,
       readingRangesSet.descriptingRange,
     );
     dRatioScore += getScore(
-      results.second.dRatio,
+      results.second.min.dRatio,
       readingRangesSet.readingRange,
     );
     totalScore = dRatioScore + dAvgTimeScore;
     return totalScore;
   }
 
-  dRatioScore = getScore(results.first.dRatio, generalRanges);
+  dRatioScore = getScore(results.first.min.dRatio, generalRanges);
   totalScore = dRatioScore + dAvgTimeScore;
   return totalScore;
 }
@@ -240,7 +248,7 @@ export function getNumsAndRatios(dsAndFs: {
 export function handleFileSelect(
   event: { preventDefault: () => void; readonly defaultPrevented: boolean },
   { filePath, data }: { filePath: string; data: string },
-): {} {
+): Results {
   const fileName = filePath.split('/').pop();
   const dataArray = parseCSV(data);
   // console.log(dataArray);

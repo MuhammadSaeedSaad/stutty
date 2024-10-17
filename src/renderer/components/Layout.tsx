@@ -10,7 +10,7 @@ export default function Layout() {
   return (
     <div className="layout-container">
       <header className="header">
-        <h1>CBSA</h1>
+        <h1>Computer Based Stuttering Analysis</h1>
       </header>
       <main className="main-content">
         <Outlet />

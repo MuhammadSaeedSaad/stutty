@@ -5,7 +5,7 @@ const PaginationContext = createContext(null);
 
 export function PaginationProvider({ children }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3); // Default to 3 pages
+  const [totalPages, setTotalPages] = useState<number>(3); // Default to 3 pages
   const navigate = useNavigate();
 
   const goToPage = (page) => {

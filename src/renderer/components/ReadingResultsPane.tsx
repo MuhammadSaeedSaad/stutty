@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ResultsCharts from './ResultCharts';
 import ResultsTable from './ResultsTable';
-import { handleFileSelect, MinSheetResults, Results } from '../utils';
+import { Results } from '../utils';
 // import '../styles/ResultsPane.css';
 import { useResultsContext } from '../contexts/ResultsContext';
 
@@ -12,42 +12,52 @@ export default function ReadingResultsPane() {
     chartsData: null,
   }); // State to hold results
 
-  const { totalResults, setTotalResults } = useResultsContext();
+  const { totalResults } = useResultsContext();
 
   const [state, setState] = useState({ loading: true });
 
+  // useEffect(() => {
+  //   // Function to handle the file-opened event
+  //   const handleFileOpened = (
+  //     event: { preventDefault: () => void; readonly defaultPrevented: boolean },
+  //     fileData: { filePath: string; data: string },
+  //   ) => {
+  //     const result = handleFileSelect(event, fileData); // Process file data
+  //     setResults(result); // Update state with the results
+  //     setState({ loading: false });
+  //     setTotalResults(() => {
+  //       totalResults.second.min = {
+  //         dRatio: result.tableData.dRatio,
+  //         dAvgTime: result.tableData.dAvgTime,
+  //       };
+  //       return totalResults;
+  //     });
+  //   };
+
+  //   // Listen for file-opened events
+  //   window.electron.onFileOpened(handleFileOpened);
+
+  //   // Clean up the listener on component unmount
+  //   return () => {
+  //     window.electron.onFileOpened((...args) => {}); // Remove the listener
+  //   };
+  // }, []);
+
   useEffect(() => {
-    // Function to handle the file-opened event
-    const handleFileOpened = (
-      event: { preventDefault: () => void; readonly defaultPrevented: boolean },
-      fileData: { filePath: string; data: string },
-    ) => {
-      const result = handleFileSelect(event, fileData); // Process file data
-      setResults(result); // Update state with the results
+    if (totalResults.second?.all) {
+      setResults(totalResults.second.all); // Update state with the results
       setState({ loading: false });
-      setTotalResults(() => {
-        totalResults.second = {
-          dRatio: result.tableData.dRatio,
-          dAvgTime: result.tableData.dAvgTime,
-        };
-        return totalResults;
-      });
-      console.log(totalResults);
-    };
-
-    // Listen for file-opened events
-    window.electron.onFileOpened(handleFileOpened);
-
-    // Clean up the listener on component unmount
-    return () => {
-      window.electron.onFileOpened((...args) => {}); // Remove the listener
-    };
-  }, []);
+    }
+  }, [totalResults]);
 
   if (state.loading) {
     return (
       <div>
-        <h1>Loading...</h1>
+        <h1>Reading Results</h1>
+        <br />
+        <br />
+        <br />
+        <h2>Please select the reading test data files</h2>
       </div>
     );
   }

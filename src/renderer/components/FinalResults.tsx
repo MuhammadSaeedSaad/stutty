@@ -11,21 +11,37 @@ export default function FinalResults() {
   const [finalResultsData, setFinalResultsData] = useState<FinalResultsData>(
     {},
   );
+  const [state, setState] = useState({ loading: true });
 
   const { totalResults } = useResultsContext();
 
   useEffect(() => {
-    console.log('inside useEffect of final results');
-    const totalScore = calculateTotalScore(totalResults);
-    const severity = getSeverity(totalScore);
-    setFinalResultsData(() => {
-      return { totalScore, severity };
-    });
-    console.log(finalResultsData);
-  }, []);
+    if (totalResults.first?.min) {
+      setState(() => ({
+        loading: false,
+      }));
+      const totalScore = calculateTotalScore(totalResults);
+      const severity = getSeverity(totalScore);
+      setFinalResultsData(() => {
+        return { totalScore, severity };
+      });
+    }
+  }, [totalResults]);
+
+  if (state.loading) {
+    return (
+      <div>
+        <h1>Final Results</h1>
+        <br />
+        <br />
+        <br />
+        <h2>Please select the analysis files first</h2>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="final-results-table">
       <h1>Final Results</h1>
       <table>
         <thead>

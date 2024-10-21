@@ -48,45 +48,45 @@ export interface TotalResults {
 
 export const readingRangesSet = {
   descriptingRange: [
-    { min: 0, max: 2, score: 2 },
+    { min: 1, max: 1, score: 2 },
     { min: 2, max: 3, score: 3 },
-    { min: 3, max: 5, score: 4 },
-    { min: 5, max: 7, score: 5 },
-    { min: 7, max: 10, score: 6 },
-    { min: 10, max: 15, score: 7 },
-    { min: 15, max: 29, score: 8 },
+    { min: 4, max: 4, score: 4 },
+    { min: 5, max: 6, score: 5 },
+    { min: 7, max: 9, score: 6 },
+    { min: 10, max: 14, score: 7 },
+    { min: 15, max: 28, score: 8 },
     { min: 29, max: 100, score: 9 },
   ],
   readingRange: [
-    { min: 0, max: 2, score: 2 },
-    { min: 2, max: 4, score: 4 },
-    { min: 4, max: 6, score: 5 },
-    { min: 6, max: 10, score: 6 },
-    { min: 10, max: 17, score: 7 },
-    { min: 17, max: 27, score: 8 },
+    { min: 1, max: 1, score: 2 },
+    { min: 2, max: 3, score: 4 },
+    { min: 4, max: 5, score: 5 },
+    { min: 6, max: 9, score: 6 },
+    { min: 10, max: 16, score: 7 },
+    { min: 17, max: 26, score: 8 },
     { min: 27, max: 100, score: 9 },
   ],
 };
 
 export const generalRanges = [
-  { min: 0, max: 2, score: 2 },
+  { min: 1, max: 1, score: 2 },
   { min: 2, max: 3, score: 4 },
-  { min: 3, max: 5, score: 6 },
-  { min: 5, max: 7, score: 10 },
-  { min: 7, max: 10, score: 12 },
-  { min: 10, max: 15, score: 14 },
-  { min: 15, max: 29, score: 16 },
+  { min: 4, max: 4, score: 6 },
+  { min: 5, max: 6, score: 10 },
+  { min: 7, max: 9, score: 12 },
+  { min: 10, max: 14, score: 14 },
+  { min: 15, max: 28, score: 16 },
   { min: 29, max: 100, score: 18 },
 ];
 
 const durationRanges = [
-  { min: 0, max: 0.5, score: 1 },
-  { min: 0.5, max: 1, score: 2 },
-  { min: 1, max: 2, score: 3 },
-  { min: 2, max: 10, score: 4 },
-  { min: 10, max: 30, score: 5 },
-  { min: 30, max: 60, score: 6 },
-  { min: 60, max: 100, score: 7 },
+  { min: 0, max: 0.25, score: 1 },
+  { min: 0.25, max: 0.75, score: 2 },
+  { min: 0.75, max: 1.5, score: 3 },
+  { min: 1.5, max: 9.5, score: 4 },
+  { min: 9.5, max: 30.5, score: 5 },
+  { min: 30.5, max: 60.5, score: 6 },
+  { min: 60.5, max: 100, score: 7 },
 ];
 
 const severityRanges = [
@@ -117,7 +117,7 @@ export function calculateTotalScore(results: TotalResults): number {
   );
   let totalScore;
 
-  if (results.second) {
+  if (results.second?.min.dRatio) {
     dRatioScore = getScore(
       results.first.min.dRatio,
       readingRangesSet.descriptingRange,

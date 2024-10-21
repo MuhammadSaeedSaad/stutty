@@ -16,7 +16,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="footer">
-        <div className="pagination">
+        {/* <div className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
@@ -26,6 +26,10 @@ export default function Layout() {
               {index + 1}
             </button>
           ))}
+        </div> */}
+        <div className="pagination">
+          <button onClick={() => goToPage(currentPage - 1)}>Back</button>
+          <button onClick={() => goToPage(currentPage + 1)}>Next</button>
         </div>
       </footer>
     </div>

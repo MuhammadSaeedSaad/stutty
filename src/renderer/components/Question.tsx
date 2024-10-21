@@ -6,7 +6,7 @@ import { useResultsContext } from '../contexts/ResultsContext';
 
 export default function Question() {
   const [answer, setAnswer] = useState('no');
-  const { setTotalPages } = usePagination();
+  const { setTotalPages, goToPage } = usePagination();
   const { setTotalResults } = useResultsContext();
 
   const handleFileSelection = async (event, type) => {
@@ -44,18 +44,27 @@ export default function Question() {
     }
   };
 
-  useEffect(() => {
-    if (answer === 'yes') {
-      setTotalPages(4); // 4 pages if answer is yes
-    } else {
-      setTotalPages(3); // 3 pages if answer is no
-    }
-  }, [answer, setTotalPages]);
+  const handleClick = async (
+    event: any,
+    isReadingTest: boolean,
+  ): Promise<void> => {
+    if (isReadingTest) setTotalPages(4);
+    else setTotalPages(3);
+    goToPage(2);
+  };
+
+  // useEffect(() => {
+  //   if (answer === 'yes') {
+  //     setTotalPages(4); // 4 pages if answer is yes
+  //   } else {
+  //     setTotalPages(3); // 3 pages if answer is no
+  //   }
+  // }, [answer, setTotalPages]);
 
   return (
     <div>
-      <h1>Do you have reading stuttering results of the patient?</h1>
-      <div className="radio-container">
+      <h1>Please select a Test</h1>
+      {/* <div className="radio-container">
         <label className="radio-label">
           <input
             type="radio"
@@ -74,9 +83,9 @@ export default function Question() {
           />
           No
         </label>
-      </div>
+      </div> */}
 
-      {answer === 'yes' && (
+      {/* {answer === 'yes' && (
         <div className="selection-container">
           <button
             onClick={() => document.getElementById('description-file')?.click()}
@@ -122,7 +131,23 @@ export default function Question() {
             onChange={(e) => handleFileSelection(e, 'description')}
           />
         </div>
-      )}
+      )} */}
+      <div className="selection-container">
+        <button
+          onClick={(e) => handleClick(e, false)}
+          type="button"
+          className="green-button"
+        >
+          Description Test Only
+        </button>
+        <button
+          onClick={(e) => handleClick(e, true)}
+          type="button"
+          className="green-button"
+        >
+          Description and reading test
+        </button>
+      </div>
     </div>
   );
 }

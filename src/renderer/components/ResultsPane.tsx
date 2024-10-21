@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ResultsCharts from './ResultCharts';
 import ResultsTable from './ResultsTable';
-import { Results } from '../utils';
+import { handleFileSelect, Results } from '../utils';
 // import '../styles/ResultsPane.css';
 import { useResultsContext } from '../contexts/ResultsContext';
 
@@ -13,9 +13,44 @@ export default function ResultsPane() {
     chartsData: null,
   }); // State to hold results
 
-  const { totalResults } = useResultsContext();
+  const { totalResults, setTotalResults } = useResultsContext();
 
   const [state, setState] = useState({ loading: true });
+
+  const handleFileSelection = async (event, type) => {
+    const file = event.target.files[0];
+    const fileData = await file.text(); // Assuming the file content is text
+    const result = handleFileSelect(event, {
+      filePath: file.name,
+      data: fileData,
+    });
+
+    console.log(result);
+
+    if (type === 'description') {
+      setTotalResults((prevResults) => ({
+        first: {
+          min: {
+            dRatio: result.tableData.dRatio,
+            dAvgTime: result.tableData.dAvgTime,
+          },
+          all: result, // Save the result to totalResults.first.all
+        },
+        second: prevResults.second,
+      }));
+    } else if (type === 'reading') {
+      setTotalResults((prevResults) => ({
+        first: prevResults.first,
+        second: {
+          min: {
+            dRatio: result.tableData.dRatio,
+            dAvgTime: result.tableData.dAvgTime,
+          },
+          all: result, // Save the result to totalResults.first.all
+        },
+      }));
+    }
+  };
 
   // useEffect(() => {
   //   // Function to handle the file-opened event
@@ -54,6 +89,19 @@ export default function ResultsPane() {
   if (state.loading) {
     return (
       <div>
+        <button
+          onClick={() => document.getElementById('description-file')?.click()}
+          type="button"
+          className="green-button"
+        >
+          Select Description File
+        </button>
+        <input
+          type="file"
+          id="description-file"
+          style={{ display: 'none' }}
+          onChange={(e) => handleFileSelection(e, 'description')}
+        />
         <h1>Description Results</h1>
         <br />
         <br />
@@ -64,16 +112,31 @@ export default function ResultsPane() {
   }
 
   return (
-    <div className="results-pane">
-      <div className="results-table">
-        <ResultsTable {...results.tableData} />
+    <>
+      <button
+        onClick={() => document.getElementById('description-file')?.click()}
+        type="button"
+        className="green-button"
+      >
+        Select Description File
+      </button>
+      <input
+        type="file"
+        id="description-file"
+        style={{ display: 'none' }}
+        onChange={(e) => handleFileSelection(e, 'description')}
+      />
+      <div className="results-pane">
+        <div className="results-table">
+          <ResultsTable {...results.tableData} />
+        </div>
+        <div className="results-charts">
+          <ResultsCharts
+            fluentData={results.chartsData.fluentData}
+            dysFluentData={results.chartsData.dysFluentData}
+          />
+        </div>
       </div>
-      <div className="results-charts">
-        <ResultsCharts
-          fluentData={results.chartsData.fluentData}
-          dysFluentData={results.chartsData.dysFluentData}
-        />
-      </div>
-    </div>
+    </>
   );
 }

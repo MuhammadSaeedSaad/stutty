@@ -12,6 +12,11 @@ h1 {
   text-align: center;
 }
 
+header h1 {
+  color: #ceddcf;
+  text-align: center;
+}
+
 h2 {
   color: #2e7d32;
   text-align: center;
@@ -121,6 +126,7 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   margin-top: 2vh;
+  flex-direction: column;
 }
 
 /* ResultsTable Component */

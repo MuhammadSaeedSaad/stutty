@@ -20,7 +20,7 @@ ChartJS.register(
 );
 
 const options = {
-  aspectRatio: 3,
+  aspectRatio: 3.1,
   responsive: true,
   tension: 0.4,
   animation: {

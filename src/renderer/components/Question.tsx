@@ -145,7 +145,7 @@ export default function Question() {
           type="button"
           className="green-button"
         >
-          Description and reading test
+          Description and reading tests
         </button>
       </div>
     </div>

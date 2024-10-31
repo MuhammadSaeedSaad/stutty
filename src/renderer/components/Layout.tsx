@@ -11,6 +11,11 @@ export default function Layout() {
     <div className="layout-container">
       <header className="header">
         <h1>Computer Based Stuttering Analysis</h1>
+        <div className="navbar">
+          <button type="button" onClick={() => goToPage(1)}>
+            Restart
+          </button>
+        </div>
       </header>
       <main className="main-content">
         <Outlet />

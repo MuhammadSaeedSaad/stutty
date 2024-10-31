@@ -6,6 +6,7 @@ import ResultsTable from './ResultsTable';
 import { handleFileSelect, Results } from '../utils';
 // import '../styles/ResultsPane.css';
 import { useResultsContext } from '../contexts/ResultsContext';
+import { usePagination } from '../contexts/PaginationContext';
 
 export default function ResultsPane() {
   const [results, setResults] = useState<Results>({
@@ -14,6 +15,7 @@ export default function ResultsPane() {
   }); // State to hold results
 
   const { totalResults, setTotalResults } = useResultsContext();
+  const { goToPage, currentPage } = usePagination();
 
   const [state, setState] = useState({ loading: true });
 
@@ -136,6 +138,11 @@ export default function ResultsPane() {
             dysFluentData={results.chartsData.dysFluentData}
           />
         </div>
+      </div>
+      <div className="pagination">
+        <button type="button" onClick={() => goToPage(currentPage + 1)}>
+          Evaluate severity
+        </button>
       </div>
     </>
   );

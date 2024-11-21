@@ -46,91 +46,190 @@ export interface TotalResults {
   };
 }
 
-export const readingRangesSet = {
-  descriptingRange: [
-    { min: 1, max: 1, score: 2 },
-    { min: 2, max: 3, score: 3 },
-    { min: 4, max: 4, score: 4 },
-    { min: 5, max: 6, score: 5 },
-    { min: 7, max: 9, score: 6 },
-    { min: 10, max: 14, score: 7 },
-    { min: 15, max: 28, score: 8 },
-    { min: 29, max: 100, score: 9 },
-  ],
-  readingRange: [
-    { min: 1, max: 1, score: 2 },
-    { min: 2, max: 3, score: 4 },
-    { min: 4, max: 5, score: 5 },
-    { min: 6, max: 9, score: 6 },
-    { min: 10, max: 16, score: 7 },
-    { min: 17, max: 26, score: 8 },
-    { min: 27, max: 100, score: 9 },
-  ],
-};
+// const readingRangesSet = {
+//   descriptingRange: [
+//     { min: 1, max: 1, score: 2 },
+//     { min: 2, max: 3, score: 3 },
+//     { min: 4, max: 4, score: 4 },
+//     { min: 5, max: 6, score: 5 },
+//     { min: 7, max: 9, score: 6 },
+//     { min: 10, max: 14, score: 7 },
+//     { min: 15, max: 28, score: 8 },
+//     { min: 29, max: 100, score: 9 },
+//   ],
+//   readingRange: [
+//     { min: 1, max: 1, score: 2 },
+//     { min: 2, max: 3, score: 4 },
+//     { min: 4, max: 5, score: 5 },
+//     { min: 6, max: 9, score: 6 },
+//     { min: 10, max: 16, score: 7 },
+//     { min: 17, max: 26, score: 8 },
+//     { min: 27, max: 100, score: 9 },
+//   ],
+// };
 
-export const generalRanges = [
-  { min: 1, max: 1, score: 2 },
-  { min: 2, max: 3, score: 4 },
-  { min: 4, max: 4, score: 6 },
-  { min: 5, max: 6, score: 10 },
-  { min: 7, max: 9, score: 12 },
-  { min: 10, max: 14, score: 14 },
-  { min: 15, max: 28, score: 16 },
-  { min: 29, max: 100, score: 18 },
-];
+// const generalRanges = [
+//   { min: 1, max: 1, score: 2 },
+//   { min: 2, max: 3, score: 4 },
+//   { min: 4, max: 4, score: 6 },
+//   { min: 5, max: 6, score: 10 },
+//   { min: 7, max: 9, score: 12 },
+//   { min: 10, max: 14, score: 14 },
+//   { min: 15, max: 28, score: 16 },
+//   { min: 29, max: 100, score: 18 },
+// ];
 
-const durationRanges = [
-  { min: 0, max: 0.25, score: 1 },
-  { min: 0.25, max: 0.75, score: 2 },
-  { min: 0.75, max: 1.5, score: 3 },
-  { min: 1.5, max: 9.5, score: 4 },
-  { min: 9.5, max: 30.5, score: 5 },
-  { min: 30.5, max: 60.5, score: 6 },
-  { min: 60.5, max: 100, score: 7 },
-];
+// const durationRanges = [
+//   { min: 0, max: 0.25, score: 1 },
+//   { min: 0.25, max: 0.75, score: 2 },
+//   { min: 0.75, max: 1.5, score: 3 },
+//   { min: 1.5, max: 9.5, score: 4 },
+//   { min: 9.5, max: 30.5, score: 5 },
+//   { min: 30.5, max: 60.5, score: 6 },
+//   { min: 60.5, max: 100, score: 7 },
+// ];
 
-const severityRanges = [
-  { min: 0, max: 10, label: 'very simple' },
-  { min: 11, max: 12, label: 'simple' },
-  { min: 13, max: 16, label: 'mild' },
-  { min: 17, max: 18, label: 'severe' },
-  { min: 19, max: 25, label: 'very severe' },
-];
+// const severityRanges = [
+//   { min: 0, max: 10, label: 'very simple' },
+//   { min: 11, max: 12, label: 'simple' },
+//   { min: 13, max: 16, label: 'mild' },
+//   { min: 17, max: 18, label: 'severe' },
+//   { min: 19, max: 25, label: 'very severe' },
+// ];
+
+// function loadCsvData() {
+//   try {
+//     const data: any[] = [];
+//     window.electron.loadCsv();
+
+//     // Do something with the data
+
+//     return data;
+//   } catch (error) {
+//     console.error('Error loading CSV data:', error);
+//     throw new Error('Error happend in loading the csv ranges');
+//   }
+// }
+
+function getRanges(csvData: any[]) {
+  // const csvData = loadCsvData();
+  const readingDescriptionRange: { min: number; max: number; score: number }[] =
+    [];
+
+  const readingReadingRange: { min: number; max: number; score: number }[] = [];
+  const noReadingDescriptionRange: {
+    min: number;
+    max: number;
+    score: number;
+  }[] = [];
+
+  const durationRange: { min: number; max: number; score: number }[] = [];
+  const severityRange: { min: number; max: number; label: string }[] = [];
+
+  let rDRCount = 0;
+  let rRRCount = 0;
+  let noRDRCount = 0;
+  let durationCount = 0;
+  let severityCount = 0;
+  for (let i = 0; i < csvData.length; i += 1) {
+    if (i >= 3 && i <= 10) {
+      readingDescriptionRange[rDRCount] = {
+        min: +csvData[i][0],
+        max: +csvData[i][1],
+        score: +csvData[i][2],
+      };
+      rDRCount += 1;
+    }
+
+    if (i >= 13 && i <= 19) {
+      readingReadingRange[rRRCount] = {
+        min: +csvData[i][0],
+        max: +csvData[i][1],
+        score: +csvData[i][2],
+      };
+      rRRCount += 1;
+    }
+
+    if (i >= 23 && i <= 30) {
+      noReadingDescriptionRange[noRDRCount] = {
+        min: +csvData[i][0],
+        max: +csvData[i][1],
+        score: +csvData[i][2],
+      };
+      noRDRCount += 1;
+    }
+
+    if (i >= 34 && i <= 40) {
+      durationRange[durationCount] = {
+        min: +csvData[i][0],
+        max: +csvData[i][1],
+        score: +csvData[i][2],
+      };
+      durationCount += 1;
+    }
+
+    if (i >= 44 && i <= 48) {
+      severityRange[severityCount] = {
+        min: +csvData[i][0],
+        max: +csvData[i][1],
+        label: csvData[i][2],
+      };
+      severityCount += 1;
+    }
+  }
+
+  return {
+    readingDescriptionRange,
+    readingReadingRange,
+    noReadingDescriptionRange,
+    durationRange,
+    severityRange,
+  };
+}
 
 function getScore(value: number, ranges: any[]): number {
   const range = ranges.find((r) => value >= r.min && value <= r.max);
   return range ? range.score : 0;
 }
 
-export function getSeverity(totalScore: number): string {
-  const range = severityRanges.find(
+export function getSeverity(totalScore: number, csvData: any[]): string {
+  const { severityRange } = getRanges(csvData);
+  const range = severityRange.find(
     (r) => totalScore >= r.min && totalScore <= r.max,
   );
   return range ? range.label : 'out of range';
 }
 
-export function calculateTotalScore(results: TotalResults): number {
+export function calculateTotalScore(
+  results: TotalResults,
+  csvData: any[],
+): number {
+  const {
+    readingDescriptionRange,
+    readingReadingRange,
+    noReadingDescriptionRange,
+    durationRange,
+  } = getRanges(csvData);
+  console.log('readingDescriptionRange', readingDescriptionRange);
+  console.log('readingReadingRange', readingReadingRange);
+  console.log('noReadingDescriptionRange', noReadingDescriptionRange);
+  console.log('durationRange', durationRange);
+
   let dRatioScore: number;
   const dAvgTimeScore: number = getScore(
     results.first.min.dAvgTime,
-    durationRanges,
+    durationRange,
   );
   let totalScore;
 
   if (results.second?.min.dRatio) {
-    dRatioScore = getScore(
-      results.first.min.dRatio,
-      readingRangesSet.descriptingRange,
-    );
-    dRatioScore += getScore(
-      results.second.min.dRatio,
-      readingRangesSet.readingRange,
-    );
+    dRatioScore = getScore(results.first.min.dRatio, readingDescriptionRange);
+    dRatioScore += getScore(results.second.min.dRatio, readingReadingRange);
     totalScore = dRatioScore + dAvgTimeScore;
     return totalScore;
   }
 
-  dRatioScore = getScore(results.first.min.dRatio, generalRanges);
+  dRatioScore = getScore(results.first.min.dRatio, noReadingDescriptionRange);
   totalScore = dRatioScore + dAvgTimeScore;
   return totalScore;
 }
@@ -139,7 +238,7 @@ export function parseCSV(csvData: string): [number, string][] {
   const lines = csvData.split('\r\n');
   const dataArray: [number, string][] = [];
 
-  for (let i = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i += 1) {
     const cells = lines[i].split(',');
     // if x is string +x is a number
     dataArray.push([+cells[0], cells[1]]);

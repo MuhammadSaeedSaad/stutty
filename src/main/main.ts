@@ -8,7 +8,9 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+import { parse } from 'csv-parse/sync';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -29,6 +31,25 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.handle('load-csv', async () => {
+  try {
+    const csvFilePath = path.join(__dirname, 'ranges.csv');
+    const data = await fs.readFile(csvFilePath, 'utf-8');
+    const records = data.split('\n');
+    const dataArray: [string, string, string][] = [];
+    for (let i = 0; i < records.length; i += 1) {
+      const cells = records[i].split(',');
+      // if x is string +x is a number
+      dataArray.push([cells[0], cells[1], cells[2]]);
+    }
+    console.log('records', records);
+    return dataArray;
+  } catch (error) {
+    console.error('Error reading CSV file:', error);
+    throw error;
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -106,6 +127,23 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+
+  // const csvFilePath = path.join(__dirname, 'ranges.csv');
+  // fs.readFile(csvFilePath, 'utf-8')
+  //   .then((data) => {
+  //     const records = data.split('\r\n');
+  //     const dataArray: [string, string, string][] = [];
+  //     for (let i = 0; i < records.length; i += 1) {
+  //       const cells = records[i].split(',');
+  //       dataArray.push([cells[0], cells[1], cells[2]]);
+  //     }
+  //     mainWindow?.webContents.on('did-finish-load', () => {
+  //       mainWindow?.webContents.send('csv-data-loaded', records);
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error reading CSV file:', error);
+  //   });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

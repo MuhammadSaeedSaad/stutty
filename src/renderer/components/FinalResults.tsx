@@ -1,11 +1,14 @@
+/* eslint-disable no-console */
+/* eslint-disable promise/always-return */
+/* eslint-disable no-inner-declarations */
 import React, { useEffect, useState } from 'react';
 import { useResultsContext } from '../contexts/ResultsContext';
 import { calculateTotalScore, getSeverity } from '../utils';
 
-type TableData = { header: string; value: string }[];
+// type TableData = { header: string; value: string }[];
 type FinalResultsData = { totalScore: number; severity: string };
 
-const tableData: TableData = [{ header: '', value: '' }];
+// const tableData: TableData = [{ header: '', value: '' }];
 
 export default function FinalResults() {
   const [finalResultsData, setFinalResultsData] = useState<FinalResultsData>(
@@ -20,11 +23,22 @@ export default function FinalResults() {
       setState(() => ({
         loading: false,
       }));
-      const totalScore = calculateTotalScore(totalResults);
-      const severity = getSeverity(totalScore);
-      setFinalResultsData(() => {
-        return { totalScore, severity };
-      });
+      let totalScore: number;
+      let severity: string;
+      window.electron
+        .loadCsv()
+        .then((csvData: any[]) => {
+          console.log('csvData', csvData);
+          totalScore = calculateTotalScore(totalResults, csvData);
+          severity = getSeverity(totalScore, csvData);
+          console.log('totalScore', totalScore, 'severity', severity);
+          setFinalResultsData(() => {
+            return { totalScore, severity };
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }, [totalResults]);
 

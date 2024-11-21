@@ -22,6 +22,9 @@ const electronHandler = {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
   },
+  loadCsv: async (): Promise<any[]> => {
+    return ipcRenderer.invoke('load-csv');
+  },
   onFileOpened: (
     callback: (
       event: { preventDefault: () => void; readonly defaultPrevented: boolean },

@@ -53,85 +53,9 @@ export default function Question() {
     goToPage(2);
   };
 
-  // useEffect(() => {
-  //   if (answer === 'yes') {
-  //     setTotalPages(4); // 4 pages if answer is yes
-  //   } else {
-  //     setTotalPages(3); // 3 pages if answer is no
-  //   }
-  // }, [answer, setTotalPages]);
-
   return (
     <div>
       <h1>Please select a Test</h1>
-      {/* <div className="radio-container">
-        <label className="radio-label">
-          <input
-            type="radio"
-            value="yes"
-            checked={answer === 'yes'}
-            onChange={() => setAnswer('yes')}
-          />
-          Yes
-        </label>
-        <label className="radio-label">
-          <input
-            type="radio"
-            value="no"
-            checked={answer === 'no'}
-            onChange={() => setAnswer('no')}
-          />
-          No
-        </label>
-      </div> */}
-
-      {/* {answer === 'yes' && (
-        <div className="selection-container">
-          <button
-            onClick={() => document.getElementById('description-file')?.click()}
-            type="button"
-            className="green-button"
-          >
-            Select Description File
-          </button>
-          <input
-            type="file"
-            id="description-file"
-            style={{ display: 'none' }}
-            onChange={(e) => handleFileSelection(e, 'description')}
-          />
-          <button
-            onClick={() => document.getElementById('reading-file')?.click()}
-            type="button"
-            className="green-button"
-          >
-            Select Reading File
-          </button>
-          <input
-            type="file"
-            id="reading-file"
-            style={{ display: 'none' }}
-            onChange={(e) => handleFileSelection(e, 'reading')}
-          />
-        </div>
-      )}
-      {answer === 'no' && (
-        <div className="selection-container">
-          <button
-            onClick={() => document.getElementById('description-file').click()}
-            type="button"
-            className="green-button"
-          >
-            Select Description File
-          </button>
-          <input
-            type="file"
-            id="description-file"
-            style={{ display: 'none' }}
-            onChange={(e) => handleFileSelection(e, 'description')}
-          />
-        </div>
-      )} */}
       <div className="selection-container">
         <button
           onClick={(e) => handleClick(e, false)}

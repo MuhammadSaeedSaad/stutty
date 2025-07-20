@@ -2,7 +2,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { usePagination } from '../contexts/PaginationContext';
-// import '../styles/Layout.css';
 
 export default function Layout() {
   const { currentPage, totalPages, goToPage } = usePagination();
@@ -21,17 +20,6 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="footer">
-        {/* <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              className={currentPage === index + 1 ? 'active' : ''}
-              onClick={() => goToPage(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div> */}
         <div className="pagination">
           <button onClick={() => goToPage(currentPage - 1)}>Back</button>
           <button onClick={() => goToPage(currentPage + 1)}>Next</button>

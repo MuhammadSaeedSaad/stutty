@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import ResultsCharts from './ResultCharts';
 import ResultsTable from './ResultsTable';
 import { handleFileSelect, Results } from '../utils';
-// import '../styles/ResultsPane.css';
 import { useResultsContext } from '../contexts/ResultsContext';
 import { usePagination } from '../contexts/PaginationContext';
 
@@ -53,33 +52,6 @@ export default function ResultsPane() {
       }));
     }
   };
-
-  // useEffect(() => {
-  //   // Function to handle the file-opened event
-  //   const handleFileOpened = (
-  //     event: { preventDefault: () => void; readonly defaultPrevented: boolean },
-  //     fileData: { filePath: string; data: string },
-  //   ) => {
-  //     const result = handleFileSelect(event, fileData); // Process file data
-  //     setResults(result); // Update state with the results
-  //     setState({ loading: false });
-  //     setTotalResults(() => {
-  //       totalResults.first.min = {
-  //         dRatio: result.tableData.dRatio,
-  //         dAvgTime: result.tableData.dAvgTime,
-  //       };
-  //       return totalResults;
-  //     });
-  //   };
-
-  //   // Listen for file-opened events
-  //   window.electron.onFileOpened(handleFileOpened);
-
-  //   // Clean up the listener on component unmount
-  //   return () => {
-  //     window.electron.onFileOpened((...args) => {}); // Remove the listener
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (totalResults.first?.all) {

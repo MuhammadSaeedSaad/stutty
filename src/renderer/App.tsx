@@ -1,7 +1,7 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ResultsPane from './components/ResultsPane';
-import Layout from './components/Layout';
+import MainLayout from './components/Layout';
 import Question from './components/Question';
 import FinalResults from './components/FinalResults';
 import { PaginationProvider } from './contexts/PaginationContext';
@@ -14,7 +14,7 @@ export default function App() {
       <ResultsContextProvider>
         <PaginationProvider>
           <Routes>
-            <Route path="/" element={<Layout />}>
+            <Route path="/" element={<MainLayout />}>
               <Route path="/" element={<Question />} />
               <Route path="/results" element={<ResultsPane />} />
               <Route path="/reading-results" element={<ReadingResultsPane />} />

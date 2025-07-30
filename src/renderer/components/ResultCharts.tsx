@@ -5,7 +5,7 @@ export default function ResultsCharts({ fluentData, dysFluentData }) {
   return (
     <>
       <BarChart chartingData={dysFluentData} />
-      <BarChart chartingData={fluentData} />
+      {/* <BarChart chartingData={fluentData} /> */}
     </>
   );
 }

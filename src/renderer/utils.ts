@@ -1,5 +1,7 @@
 import { round } from 'mathjs';
 
+
+// == TYPES ==
 export type chartData = {
   labels: number[];
   datasets: {}[];
@@ -210,10 +212,10 @@ export function calculateTotalScore(
     noReadingDescriptionRange,
     durationRange,
   } = getRanges(csvData);
-  console.log('readingDescriptionRange', readingDescriptionRange);
-  console.log('readingReadingRange', readingReadingRange);
-  console.log('noReadingDescriptionRange', noReadingDescriptionRange);
-  console.log('durationRange', durationRange);
+  // console.log('readingDescriptionRange', readingDescriptionRange);
+  // console.log('readingReadingRange', readingReadingRange);
+  // console.log('noReadingDescriptionRange', noReadingDescriptionRange);
+  // console.log('durationRange', durationRange);
 
   let dRatioScore: number;
   const dAvgTimeScore: number = getScore(
@@ -330,6 +332,7 @@ export function getNumsAndRatios(dsAndFs: {
   dRatio = Math.round(dRatio * 100) / 100;
   fRatio = Math.floor(fRatio * 100) / 100;
 
+  console.log("Longest Dysfluent syllable: ", dsAndFs.Ds.data[dsAndFs.Ds.data.length - 1]);
   const dAvgTime =
     (dsAndFs.Ds.data[dsAndFs.Ds.data.length - 1] +
       dsAndFs.Ds.data[dsAndFs.Ds.data.length - 2] +
@@ -352,17 +355,21 @@ export function handleFileSelect(
   const dataArray = parseCSV(data);
   // console.log(dataArray);
   // fix typos in var identifires
-  let recordingLength = 0;
-  for (let i = 0; i < dataArray.length; i += 2) {
-    const syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
-    recordingLength += syllableDuartion;
-  }
+  // fix recordingLength should be the result of subtracting the last from the first
+  let recordingLength = dataArray[dataArray.length-1][0] - dataArray[0][0];
+  // let xxrecordingLength = dataArray[dataArray.length-1][0] - dataArray[0][0];
+  // console.log('xxrecordingLength', xxrecordingLength);
+  // for (let i = 0; i < dataArray.length; i += 2) {
+  //   const syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
+  //   recordingLength += syllableDuartion;
+  // }
 
   let fSyllablesDuration = 0;
   let dSyllablesDuration = 0;
   // the following 2 variables are repeates .. fix by using dsAndFs array
   let fSyllablesNumber = 0;
   let dSyllablesNumber = 0;
+  console.log('dataArray', dataArray);
   for (let i = 0; i < dataArray.length; i += 2) {
     const syllableDuartion = dataArray[i + 1][0] - dataArray[i][0];
     if (dataArray[i][1] === 'F') {
@@ -375,16 +382,19 @@ export function handleFileSelect(
   }
 
   let inefficientSpeechScore: number =
-    (dSyllablesDuration / recordingLength) * 100;
+    (dSyllablesDuration / (fSyllablesDuration + dSyllablesDuration)) * 100;
+    // (dSyllablesDuration / recordingLength) * 100;
   inefficientSpeechScore = Math.round(inefficientSpeechScore * 100) / 100;
   let efficientSpeechScore: number =
-    (fSyllablesDuration / recordingLength) * 100;
+    (fSyllablesDuration / (fSyllablesDuration + dSyllablesDuration)) * 100;
+    // (fSyllablesDuration / recordingLength) * 100;
   efficientSpeechScore = Math.round(efficientSpeechScore * 100) / 100;
 
   let meanStutteringDuration = dSyllablesDuration / dSyllablesNumber;
   meanStutteringDuration = Math.round(meanStutteringDuration * 100) / 100;
 
-  let numberOfSylablesPerMinute = (dataArray.length / recordingLength) * 30;
+  // subtract 2 from dataArray.length to remove the start (S) and (E) elements
+  let numberOfSylablesPerMinute = ((dataArray.length - 2) / recordingLength) * 30;
   numberOfSylablesPerMinute = round(numberOfSylablesPerMinute * 100) / 100;
   const dsAndFs = splitDsFs(dataArray);
   let numberOfFSylablesPerMinute =

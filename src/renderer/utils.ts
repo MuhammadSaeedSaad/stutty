@@ -1,6 +1,5 @@
 import { round } from 'mathjs';
 
-
 // == TYPES ==
 export type chartData = {
   labels: number[];
@@ -128,57 +127,114 @@ function getRanges(csvData: any[]) {
   const durationRange: { min: number; max: number; score: number }[] = [];
   const severityRange: { min: number; max: number; label: string }[] = [];
 
-  let rDRCount = 0;
-  let rRRCount = 0;
-  let noRDRCount = 0;
-  let durationCount = 0;
-  let severityCount = 0;
-  for (let i = 0; i < csvData.length; i += 1) {
-    if (i >= 3 && i <= 10) {
-      readingDescriptionRange[rDRCount] = {
-        min: +csvData[i][0],
-        max: +csvData[i][1],
-        score: +csvData[i][2],
-      };
-      rDRCount += 1;
-    }
+  const readingRangesSet = {
+    descriptingRange: [
+      { min: 1, max: 1, score: 2 },
+      { min: 2, max: 3, score: 3 },
+      { min: 4, max: 4, score: 4 },
+      { min: 5, max: 6, score: 5 },
+      { min: 7, max: 9, score: 6 },
+      { min: 10, max: 14, score: 7 },
+      { min: 15, max: 28, score: 8 },
+      { min: 29, max: 100, score: 9 },
+    ],
+    readingRange: [
+      { min: 1, max: 1, score: 2 },
+      { min: 2, max: 3, score: 4 },
+      { min: 4, max: 5, score: 5 },
+      { min: 6, max: 9, score: 6 },
+      { min: 10, max: 16, score: 7 },
+      { min: 17, max: 26, score: 8 },
+      { min: 27, max: 100, score: 9 },
+    ],
+  };
 
-    if (i >= 13 && i <= 19) {
-      readingReadingRange[rRRCount] = {
-        min: +csvData[i][0],
-        max: +csvData[i][1],
-        score: +csvData[i][2],
-      };
-      rRRCount += 1;
-    }
+  const generalRanges = [
+    { min: 1, max: 1, score: 2 }, // should be removed
+    { min: 2, max: 3, score: 4 },
+    { min: 4, max: 4, score: 6 },
+    { min: 5, max: 6, score: 10 },
+    { min: 7, max: 9, score: 12 },
+    { min: 10, max: 14, score: 14 },
+    { min: 15, max: 28, score: 16 },
+    { min: 29, max: 100, score: 18 },
+  ];
 
-    if (i >= 23 && i <= 30) {
-      noReadingDescriptionRange[noRDRCount] = {
-        min: +csvData[i][0],
-        max: +csvData[i][1],
-        score: +csvData[i][2],
-      };
-      noRDRCount += 1;
-    }
+  const durationRanges = [
+    { min: 0, max: 0.25, score: 1 },
+    { min: 0.251, max: 0.5, score: 2 },
+    { min: 0.51, max: 2, score: 3 },
+    { min: 2.01, max: 9.5, score: 4 },
+    { min: 9.51, max: 30.5, score: 5 },
+    { min: 30.51, max: 60.5, score: 6 },
+    { min: 60.51, max: 100, score: 7 },
+  ];
 
-    if (i >= 34 && i <= 40) {
-      durationRange[durationCount] = {
-        min: +csvData[i][0],
-        max: +csvData[i][1],
-        score: +csvData[i][2],
-      };
-      durationCount += 1;
-    }
+  const severityRanges = [
+    { min: 0, max: 11, label: 'very mild' },
+    { min: 12, max: 13, label: 'mild' },
+    { min: 14, max: 17, label: 'moderate' },
+    { min: 18, max: 19, label: 'severe' },
+    { min: 20, max: 25, label: 'very severe' },
+  ];
 
-    if (i >= 44 && i <= 48) {
-      severityRange[severityCount] = {
-        min: +csvData[i][0],
-        max: +csvData[i][1],
-        label: csvData[i][2],
-      };
-      severityCount += 1;
-    }
-  }
+  readingDescriptionRange.push(...readingRangesSet.descriptingRange);
+  readingReadingRange.push(...readingRangesSet.readingRange);
+  noReadingDescriptionRange.push(...generalRanges);
+  durationRange.push(...durationRanges);
+  severityRange.push(...severityRanges);
+
+  // let rDRCount = 0;
+  // let rRRCount = 0;
+  // let noRDRCount = 0;
+  // let durationCount = 0;
+  // let severityCount = 0;
+  // for (let i = 0; i < csvData.length; i += 1) {
+  //   if (i >= 3 && i <= 10) {
+  //     readingDescriptionRange[rDRCount] = {
+  //       min: +csvData[i][0],
+  //       max: +csvData[i][1],
+  //       score: +csvData[i][2],
+  //     };
+  //     rDRCount += 1;
+  //   }
+  //
+  //   if (i >= 13 && i <= 19) {
+  //     readingReadingRange[rRRCount] = {
+  //       min: +csvData[i][0],
+  //       max: +csvData[i][1],
+  //       score: +csvData[i][2],
+  //     };
+  //     rRRCount += 1;
+  //   }
+  //
+  //   if (i >= 23 && i <= 30) {
+  //     noReadingDescriptionRange[noRDRCount] = {
+  //       min: +csvData[i][0],
+  //       max: +csvData[i][1],
+  //       score: +csvData[i][2],
+  //     };
+  //     noRDRCount += 1;
+  //   }
+  //
+  //   if (i >= 34 && i <= 40) {
+  //     durationRange[durationCount] = {
+  //       min: +csvData[i][0],
+  //       max: +csvData[i][1],
+  //       score: +csvData[i][2],
+  //     };
+  //     durationCount += 1;
+  //   }
+  //
+  //   if (i >= 44 && i <= 48) {
+  //     severityRange[severityCount] = {
+  //       min: +csvData[i][0],
+  //       max: +csvData[i][1],
+  //       label: csvData[i][2],
+  //     };
+  //     severityCount += 1;
+  //   }
+  // }
 
   return {
     readingDescriptionRange,
@@ -332,7 +388,10 @@ export function getNumsAndRatios(dsAndFs: {
   dRatio = Math.round(dRatio * 100) / 100;
   fRatio = Math.floor(fRatio * 100) / 100;
 
-  console.log("Longest Dysfluent syllable: ", dsAndFs.Ds.data[dsAndFs.Ds.data.length - 1]);
+  console.log(
+    'Longest Dysfluent syllable: ',
+    dsAndFs.Ds.data[dsAndFs.Ds.data.length - 1],
+  );
   const dAvgTime =
     (dsAndFs.Ds.data[dsAndFs.Ds.data.length - 1] +
       dsAndFs.Ds.data[dsAndFs.Ds.data.length - 2] +
@@ -356,7 +415,7 @@ export function handleFileSelect(
   // console.log(dataArray);
   // fix typos in var identifires
   // fix recordingLength should be the result of subtracting the last from the first
-  let recordingLength = dataArray[dataArray.length-1][0] - dataArray[0][0];
+  let recordingLength = dataArray[dataArray.length - 1][0] - dataArray[0][0];
   // let xxrecordingLength = dataArray[dataArray.length-1][0] - dataArray[0][0];
   // console.log('xxrecordingLength', xxrecordingLength);
   // for (let i = 0; i < dataArray.length; i += 2) {
@@ -383,18 +442,19 @@ export function handleFileSelect(
 
   let inefficientSpeechScore: number =
     (dSyllablesDuration / (fSyllablesDuration + dSyllablesDuration)) * 100;
-    // (dSyllablesDuration / recordingLength) * 100;
+  // (dSyllablesDuration / recordingLength) * 100;
   inefficientSpeechScore = Math.round(inefficientSpeechScore * 100) / 100;
   let efficientSpeechScore: number =
     (fSyllablesDuration / (fSyllablesDuration + dSyllablesDuration)) * 100;
-    // (fSyllablesDuration / recordingLength) * 100;
+  // (fSyllablesDuration / recordingLength) * 100;
   efficientSpeechScore = Math.round(efficientSpeechScore * 100) / 100;
 
   let meanStutteringDuration = dSyllablesDuration / dSyllablesNumber;
   meanStutteringDuration = Math.round(meanStutteringDuration * 100) / 100;
 
   // subtract 2 from dataArray.length to remove the start (S) and (E) elements
-  let numberOfSylablesPerMinute = ((dataArray.length - 2) / recordingLength) * 30;
+  let numberOfSylablesPerMinute =
+    ((dataArray.length - 2) / recordingLength) * 30;
   numberOfSylablesPerMinute = round(numberOfSylablesPerMinute * 100) / 100;
   const dsAndFs = splitDsFs(dataArray);
   let numberOfFSylablesPerMinute =

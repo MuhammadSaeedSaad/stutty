@@ -112,7 +112,8 @@ export interface TotalResults {
 //   }
 // }
 
-function getRanges(csvData: any[]) {
+// function getRanges(csvData: any[]) {
+function getRanges() {
   // const csvData = loadCsvData();
   const readingDescriptionRange: { min: number; max: number; score: number }[] =
     [];
@@ -250,28 +251,28 @@ function getScore(value: number, ranges: any[]): number {
   return range ? range.score : 0;
 }
 
-export function getSeverity(totalScore: number, csvData: any[]): string {
-  const { severityRange } = getRanges(csvData);
+export function getSeverity(totalScore: number): string {
+  const { severityRange } = getRanges();
   const range = severityRange.find(
     (r) => totalScore >= r.min && totalScore <= r.max,
   );
   return range ? range.label : 'out of range';
 }
+// export function getSeverity(totalScore: number, csvData: any[]): string {
+//   const { severityRange } = getRanges(csvData);
+//   const range = severityRange.find(
+//     (r) => totalScore >= r.min && totalScore <= r.max,
+//   );
+//   return range ? range.label : 'out of range';
+// }
 
-export function calculateTotalScore(
-  results: TotalResults,
-  csvData: any[],
-): number {
+export function calculateTotalScore(results: TotalResults): number {
   const {
     readingDescriptionRange,
     readingReadingRange,
     noReadingDescriptionRange,
     durationRange,
-  } = getRanges(csvData);
-  // console.log('readingDescriptionRange', readingDescriptionRange);
-  // console.log('readingReadingRange', readingReadingRange);
-  // console.log('noReadingDescriptionRange', noReadingDescriptionRange);
-  // console.log('durationRange', durationRange);
+  } = getRanges();
 
   let dRatioScore: number;
   const dAvgTimeScore: number = getScore(
@@ -291,6 +292,39 @@ export function calculateTotalScore(
   totalScore = dRatioScore + dAvgTimeScore;
   return totalScore;
 }
+// export function calculateTotalScore(
+//   results: TotalResults,
+//   csvData: any[],
+// ): number {
+//   const {
+//     readingDescriptionRange,
+//     readingReadingRange,
+//     noReadingDescriptionRange,
+//     durationRange,
+//   } = getRanges(csvData);
+//   // console.log('readingDescriptionRange', readingDescriptionRange);
+//   // console.log('readingReadingRange', readingReadingRange);
+//   // console.log('noReadingDescriptionRange', noReadingDescriptionRange);
+//   // console.log('durationRange', durationRange);
+//
+//   let dRatioScore: number;
+//   const dAvgTimeScore: number = getScore(
+//     results.first.min.dAvgTime,
+//     durationRange,
+//   );
+//   let totalScore;
+//
+//   if (results.second?.min.dRatio) {
+//     dRatioScore = getScore(results.first.min.dRatio, readingDescriptionRange);
+//     dRatioScore += getScore(results.second.min.dRatio, readingReadingRange);
+//     totalScore = dRatioScore + dAvgTimeScore;
+//     return totalScore;
+//   }
+//
+//   dRatioScore = getScore(results.first.min.dRatio, noReadingDescriptionRange);
+//   totalScore = dRatioScore + dAvgTimeScore;
+//   return totalScore;
+// }
 
 export function parseCSV(csvData: string): [number, string][] {
   const lines = csvData.split('\r\n');

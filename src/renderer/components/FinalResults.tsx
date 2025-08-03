@@ -22,20 +22,26 @@ export default function FinalResults() {
       }));
       let totalScore: number;
       let severity: string;
-      window.electron
-        .loadCsv()
-        .then((csvData: any[]) => {
-          console.log('csvData', csvData);
-          totalScore = calculateTotalScore(totalResults, csvData);
-          severity = getSeverity(totalScore, csvData);
-          console.log('totalScore', totalScore, 'severity', severity);
-          setFinalResultsData(() => {
-            return { totalScore, severity };
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      totalScore = calculateTotalScore(totalResults);
+      severity = getSeverity(totalScore);
+      console.log('totalScore', totalScore, 'severity', severity);
+      setFinalResultsData(() => {
+        return { totalScore, severity };
+      });
+      // window.electron
+      //   .loadCsv()
+      //   .then((csvData: any[]) => {
+      //     console.log('csvData', csvData);
+      //     totalScore = calculateTotalScore(totalResults, csvData);
+      //     severity = getSeverity(totalScore, csvData);
+      //     console.log('totalScore', totalScore, 'severity', severity);
+      //     setFinalResultsData(() => {
+      //       return { totalScore, severity };
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+      //   });
     }
   }, [totalResults]);
 

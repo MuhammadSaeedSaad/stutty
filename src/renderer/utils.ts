@@ -126,7 +126,8 @@ function getRanges() {
   }[] = [];
 
   const durationRange: { min: number; max: number; score: number }[] = [];
-  const severityRange: { min: number; max: number; label: string }[] = [];
+  // const severityRangeReading: { min: number; max: number; label: string }[] = [];
+  // const severityRangeNoReading: { min: number; max: number; label: string }[] = [];
 
   const readingRangesSet = {
     descriptingRange: [
@@ -171,7 +172,7 @@ function getRanges() {
     { min: 60.51, max: 100, score: 7 },
   ];
 
-  const severityRanges = [
+  const severityRangeReading = [
     { min: 0, max: 11, label: 'very mild' },
     { min: 12, max: 13, label: 'mild' },
     { min: 14, max: 17, label: 'moderate' },
@@ -179,70 +180,26 @@ function getRanges() {
     { min: 20, max: 25, label: 'very severe' },
   ];
 
+  const severityRangeNoReading = [
+    { min: 0, max: 10, label: 'very mild' },
+    { min: 11, max: 12, label: 'mild' },
+    { min: 13, max: 16, label: 'moderate' },
+    { min: 17, max: 18, label: 'severe' },
+    { min: 19, max: 25, label: 'very severe' },
+  ];
+
   readingDescriptionRange.push(...readingRangesSet.descriptingRange);
   readingReadingRange.push(...readingRangesSet.readingRange);
   noReadingDescriptionRange.push(...generalRanges);
   durationRange.push(...durationRanges);
-  severityRange.push(...severityRanges);
-
-  // let rDRCount = 0;
-  // let rRRCount = 0;
-  // let noRDRCount = 0;
-  // let durationCount = 0;
-  // let severityCount = 0;
-  // for (let i = 0; i < csvData.length; i += 1) {
-  //   if (i >= 3 && i <= 10) {
-  //     readingDescriptionRange[rDRCount] = {
-  //       min: +csvData[i][0],
-  //       max: +csvData[i][1],
-  //       score: +csvData[i][2],
-  //     };
-  //     rDRCount += 1;
-  //   }
-  //
-  //   if (i >= 13 && i <= 19) {
-  //     readingReadingRange[rRRCount] = {
-  //       min: +csvData[i][0],
-  //       max: +csvData[i][1],
-  //       score: +csvData[i][2],
-  //     };
-  //     rRRCount += 1;
-  //   }
-  //
-  //   if (i >= 23 && i <= 30) {
-  //     noReadingDescriptionRange[noRDRCount] = {
-  //       min: +csvData[i][0],
-  //       max: +csvData[i][1],
-  //       score: +csvData[i][2],
-  //     };
-  //     noRDRCount += 1;
-  //   }
-  //
-  //   if (i >= 34 && i <= 40) {
-  //     durationRange[durationCount] = {
-  //       min: +csvData[i][0],
-  //       max: +csvData[i][1],
-  //       score: +csvData[i][2],
-  //     };
-  //     durationCount += 1;
-  //   }
-  //
-  //   if (i >= 44 && i <= 48) {
-  //     severityRange[severityCount] = {
-  //       min: +csvData[i][0],
-  //       max: +csvData[i][1],
-  //       label: csvData[i][2],
-  //     };
-  //     severityCount += 1;
-  //   }
-  // }
 
   return {
     readingDescriptionRange,
     readingReadingRange,
     noReadingDescriptionRange,
     durationRange,
-    severityRange,
+    severityRangeReading,
+    severityRangeNoReading,
   };
 }
 
@@ -251,20 +208,20 @@ function getScore(value: number, ranges: any[]): number {
   return range ? range.score : 0;
 }
 
-export function getSeverity(totalScore: number): string {
-  const { severityRange } = getRanges();
-  const range = severityRange.find(
+export function getSeverity(totalScore: number, isReader: boolean): string {
+  if (isReader) {
+    const { severityRangeReading } = getRanges();
+    const range = severityRangeReading.find(
+      (r) => totalScore >= r.min && totalScore <= r.max,
+    );
+    return range ? range.label : 'out of range';
+  }
+  const { severityRangeNoReading } = getRanges();
+  const range = severityRangeNoReading.find(
     (r) => totalScore >= r.min && totalScore <= r.max,
   );
   return range ? range.label : 'out of range';
 }
-// export function getSeverity(totalScore: number, csvData: any[]): string {
-//   const { severityRange } = getRanges(csvData);
-//   const range = severityRange.find(
-//     (r) => totalScore >= r.min && totalScore <= r.max,
-//   );
-//   return range ? range.label : 'out of range';
-// }
 
 export function calculateTotalScore(results: TotalResults): number {
   const {

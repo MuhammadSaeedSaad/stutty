@@ -23,7 +23,7 @@ export default function FinalResults() {
       let totalScore: number;
       let severity: string;
       totalScore = calculateTotalScore(totalResults);
-      severity = getSeverity(totalScore);
+      severity = getSeverity(totalScore, Boolean(totalResults.second?.min));
       console.log('totalScore', totalScore, 'severity', severity);
       setFinalResultsData(() => {
         return { totalScore, severity };
